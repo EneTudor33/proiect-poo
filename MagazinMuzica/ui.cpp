@@ -229,7 +229,7 @@ void GestiuneAlbum(Service& service)
 			std::cout << "Optiune invalida" << std::endl;
 			Pause();
 		}
-			
+
 		}
 	}
 }

@@ -13,6 +13,7 @@
 #include<memory>
 class Service {
 public:
+	void SaveAll();
 	const std::vector<Album>& GetAllAlbum() const;
 	bool AddAlbum(std::string titlu, Data data_lansare, int numar_melodii,double pret, int id_gen, int id_casa, int id_artist);
 	bool RemoveAlbum(int id);
@@ -47,9 +48,12 @@ public:
 	const std::vector<CasaDeDiscuri>& GetAllCasaDeDiscuri() const;
 	void AddCasaDeDiscuri(std::string nume, std::string tara, std::string cod_fiscal);
 	bool RemoveCasaDeDiscuri(int id);
+
+	~Service();
 private:
 	std::vector <Album> m_albume;
-	std::vector<std::unique_ptr<Artist>> m_artisti;
+	std::vector<std::unique_ptr<Artist>> m_artisti; //folosim smart pointers in m_artisti intrucat vrem sa stocam in acest vector
+	//toti artistii indiferent de tipul lor
 	std::vector <GenMuzical> m_genuri_muzicale;
 	std::vector <Comanda> m_comenzi;
 	std::vector<DetaliiComanda> m_detalii_comenzi;
