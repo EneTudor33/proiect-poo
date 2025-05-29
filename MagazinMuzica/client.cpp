@@ -5,7 +5,6 @@ int Client::m_next_id_client = 0;
 Client::Client(std::string nume, std::string prenume, std::string email, std::string telefon):
 m_id_client(++m_next_id_client),m_nume(nume),m_prenume(prenume),m_email(email),m_telefon(telefon)
 {
-	std::cout << "Clientul nou cu id-ul "<<m_id_client<<" a fost adaugat";
 }
 int Client::GetIdClient() const
 {

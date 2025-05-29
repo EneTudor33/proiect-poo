@@ -12,18 +12,9 @@
 #include <vector>
 #include<memory>
 class Service {
-private:
-	std::vector <Album> m_albume;
-	std::vector<std::unique_ptr<Artist>> m_artisti;
-	std::vector <GenMuzical> m_genuri_muzicale;
-	std::vector <Comanda> m_comenzi;
-	std::vector<DetaliiComanda> m_detalii_comenzi;
-	std::vector <Client> m_clienti;
-	std::vector <AdresaClient> m_adrese_clienti;
-	std::vector <CasaDeDiscuri> m_case_de_discuri;
 public:
 	const std::vector<Album>& GetAllAlbum() const;
-	bool AddAlbum(std::string titlu, Data data_lansare, int numar_melodii, int id_gen, int id_casa, int id_artist);
+	bool AddAlbum(std::string titlu, Data data_lansare, int numar_melodii,double pret, int id_gen, int id_casa, int id_artist);
 	bool RemoveAlbum(int id);
 
 	const std::vector<std::unique_ptr<Artist>>& GetAllArtist() const;
@@ -38,6 +29,7 @@ public:
 	const std::vector<Comanda>& GetAllComanda() const;
 	int AddComanda(int id_client);
 	bool RemoveComanda(int id_comanda);
+	double GetTotalPretComanda(int id_comanda) const;
 
 	const std::vector<DetaliiComanda> GetDetaliiComanda(int id_comanda) const;
 	bool AddDetaliiComanda(int id_comanda, int id_album, int cantitate);
@@ -55,4 +47,13 @@ public:
 	const std::vector<CasaDeDiscuri>& GetAllCasaDeDiscuri() const;
 	void AddCasaDeDiscuri(std::string nume, std::string tara, std::string cod_fiscal);
 	bool RemoveCasaDeDiscuri(int id);
+private:
+	std::vector <Album> m_albume;
+	std::vector<std::unique_ptr<Artist>> m_artisti;
+	std::vector <GenMuzical> m_genuri_muzicale;
+	std::vector <Comanda> m_comenzi;
+	std::vector<DetaliiComanda> m_detalii_comenzi;
+	std::vector <Client> m_clienti;
+	std::vector <AdresaClient> m_adrese_clienti;
+	std::vector <CasaDeDiscuri> m_case_de_discuri;
 };

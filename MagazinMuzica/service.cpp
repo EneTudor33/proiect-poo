@@ -7,7 +7,7 @@ const std::vector<Album>& Service::GetAllAlbum() const
 {
 	return m_albume;
 }
-bool Service::AddAlbum(std::string titlu, Data data_lansare, int numar_melodii, int id_gen, int id_casa, int id_artist)
+bool Service::AddAlbum(std::string titlu, Data data_lansare, int numar_melodii,double pret, int id_gen, int id_casa, int id_artist)
 {
 	bool exista_artist = std::any_of(m_artisti.begin(), m_artisti.end(),[id_artist](const std::unique_ptr<Artist>& p)
 	{return p->GetIdArtist() == id_artist;});
@@ -17,7 +17,7 @@ bool Service::AddAlbum(std::string titlu, Data data_lansare, int numar_melodii, 
 	{return g.GetIdGen() == id_gen;});
 	if (!exista_artist || !exista_casa || !exista_gen)
 		return false;
-	m_albume.emplace_back(titlu, data_lansare, numar_melodii, id_gen, id_casa,id_artist);
+	m_albume.emplace_back(titlu, data_lansare, numar_melodii, pret, id_gen, id_casa,id_artist);
 	return true;
 }
 bool Service::RemoveAlbum(int id)
@@ -28,6 +28,7 @@ bool Service::RemoveAlbum(int id)
 		m_albume.erase(it, m_albume.end());
 		return true;
 }
+
 
 const std::vector<std::unique_ptr<Artist>>& Service::GetAllArtist() const
 {
@@ -74,6 +75,10 @@ const std::vector<Comanda>& Service::GetAllComanda() const
 }
 int Service::AddComanda(int id_client)
 {
+	bool exista = std::any_of(m_clienti.begin(), m_clienti.end(),[id_client](const Client& c) 
+	{return c.GetIdClient() == id_client;});
+	if (!exista)
+		return -1;
 	m_comenzi.emplace_back(id_client);
 	return m_comenzi.back().GetIdComanda();
 }
@@ -118,6 +123,19 @@ bool Service::AddDetaliiComanda(int id_comanda, int id_album, int cantitate)
 		return false;
 	m_detalii_comenzi.emplace_back(id_comanda, id_album, cantitate);
 	return true;
+}
+double Service::GetTotalPretComanda(int id_comanda) const
+{
+	double total = 0.0;
+	for (const auto& d : m_detalii_comenzi)
+		if (d.GetIdComanda() == id_comanda)
+		{
+			auto itAlb = std::find_if(m_albume.begin(), m_albume.end(),[&](const Album& a) 
+				{return a.GetIdAlbum() == d.GetIdAlbum();});
+			if (itAlb != m_albume.end())
+				total += itAlb->GetPret() * d.GetCantitate();
+		}
+	return total;
 }
 
 const std::vector<Client>& Service::GetAllClient() const

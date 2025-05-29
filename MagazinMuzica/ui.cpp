@@ -172,6 +172,7 @@ void GestiuneAlbum(Service& service)
 		case 2:
 		{
 			int nr_melodii, id_gen, id_casa, id_artist;
+			double pret;
 			std::string titlu;
 			Data data;
 			std::cout << "Titlu: "<<std::endl;
@@ -188,6 +189,9 @@ void GestiuneAlbum(Service& service)
 			std::cout << "Numar melodii: " << std::endl;
 			std::cin >> nr_melodii;
 			std::cin.ignore();
+			std::cout << "Pret: " << std::endl;
+			std::cin >> pret;
+			std::cin.ignore();
 			std::cout << "Id Gen: " << std::endl;
 			std::cin >> id_gen;
 			std::cin.ignore();
@@ -197,7 +201,7 @@ void GestiuneAlbum(Service& service)
 			std::cout << "Id Artist: " << std::endl;
 			std::cin >> id_artist;
 			std::cin.ignore();
-			if (!service.AddAlbum(titlu, data, nr_melodii, id_gen, id_casa, id_artist))
+			if (!service.AddAlbum(titlu, data, nr_melodii, pret, id_gen, id_casa, id_artist))
 				std::cout << "Artist sau Casa de Discuri inexistent!" << std::endl;
 			Pause();
 			break;
@@ -478,6 +482,8 @@ void GestiuneComenzi(Service& service)
 					{
 						std::cout << "Album:" << d.GetIdDetaliiComanda().id_album << " Cantitate:" << d.GetCantitate() << std::endl;
 					}
+					double total = service.GetTotalPretComanda(c.GetIdComanda());
+					std::cout << "Total: " << total << " lei" << std::endl;
 				}
 			}
 			Pause();
@@ -490,6 +496,12 @@ void GestiuneComenzi(Service& service)
 			std::cin >> id_client;
 			std::cin.ignore();
 			int id_comanda = service.AddComanda(id_client);
+			if (id_comanda == -1) 
+			{
+				std::cout << "Client inexistent!"<<std::endl;
+				Pause();
+				break;
+			}
 			bool more = true;
 			while (more)
 			{
